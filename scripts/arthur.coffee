@@ -30,6 +30,6 @@ module.exports = (robot) ->
       msg.send
         username: "healthCheck Bot",
         mrkdwn: true
-        text: "global status: #{data.globalStatus}"
+        text: "<#{healthCheckUrl}|global status: #{data.globalStatus}>"
         #text: report
         attachments: attachments
