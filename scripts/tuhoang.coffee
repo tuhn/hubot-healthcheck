@@ -28,9 +28,10 @@ module.exports = (robot) ->
       envName = aliases[envName]
 
     if envName in sites
-      healthCheckUrl = 'http://' + envName + '.sandbox.local/_monitor/health/run'
+      siteName = envName + '.sandbox.local'
+      healthCheckUrl = 'http://' + siteName + '/_monitor/health/run'
 
-      msg.send "Hey, I am trying to check " + healthCheckUrl
+      msg.send "Hey, I am trying to check " + siteName
       robot.http(healthCheckUrl)
       .header('Accept', 'application/json')
       .get() (err, res, body) ->
@@ -41,16 +42,16 @@ module.exports = (robot) ->
             attachments: [
               {
                 fallback: 'EAI Accessibility Check'
-                color: 'green'
+                color: '#00b200'
                 text: 'EAI is OK'
               }
               {
                 fallback: 'MemcacheD Accessibility Check'
-                color: 'green'
+                color: '#00b200'
                 text: 'MemcacheD is OK'
               }
             ]
         catch err
-          msg.send "Sorry, I coudn't check " + healthCheckUrl
+          msg.send "Sorry, I coudn't check " + siteName
     else
       msg.send "Sorry, that site has not been defined: " + envName
