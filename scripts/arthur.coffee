@@ -5,4 +5,4 @@ module.exports = (robot) ->
     .header('Accept', 'application/json')
     .get() (err, res, body) ->
       data = JSON.parse body
-      res.send "status: #{data.globalStatus}"
+      msg.send "status: #{data.globalStatus}"
