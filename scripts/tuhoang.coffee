@@ -36,7 +36,20 @@ module.exports = (robot) ->
       .get() (err, res, body) ->
         try
           data = JSON.parse body
-          msg.send "General Status: #{data.globalStatus}"
+          msg.send
+            text: "General Status: #{data.globalStatus}"
+            attachments: [
+              {
+                fallback: 'EAI Accessibility Check'
+                color: 'green'
+                text: 'EAI is OK'
+              }
+              {
+                fallback: 'MemcacheD Accessibility Check'
+                color: 'green'
+                text: 'MemcacheD is OK'
+              }
+            ]
         catch err
           msg.send "Sorry, I coudn't check " + healthCheckUrl
     else
