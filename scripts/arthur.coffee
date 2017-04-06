@@ -3,10 +3,15 @@ module.exports = (robot) ->
 
   attachments = []
 
+  colors =
+    success: '#00b200'
+    alert: '#e50000'
+
   concat = (check) ->
-    icon = if check.status == 0 then '✔' else '✖'
+    color = if check.status == 0 then colors.success else color.alert
     attachments.push {
-      text: icon + ' ' + check.checkName + "\n" + check.message
+      'color': color
+      'text': "*#{check.checkName}* \n\n #{check.message}"
     }
 
   robot.respond /test/i, (msg) ->
@@ -16,6 +21,7 @@ module.exports = (robot) ->
       data = JSON.parse body
       #msg.send "status: #{data.globalStatus}"
 
+      attachments = []
       concat check for check in data.checks
 
       console.log(JSON.stringify(attachments));
@@ -27,6 +33,3 @@ module.exports = (robot) ->
         text: "global status: #{data.globalStatus}"
         #text: report
         attachments: attachments
-        #   text: "And here's an attachment!"
-        #   image_url: "http://www.freeiconspng.com/uploads/success-icon-10.png"
-        # ]
