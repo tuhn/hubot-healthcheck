@@ -11,7 +11,8 @@ module.exports = (robot) ->
     attachments.push {
       color: if check.status == 0 then colors.success else color.alert
       text: "*#{check.checkName}* \n\n #{check.message}"
-      mrkdwn: true
+      mrkdwn_in:
+        "text"
     }
 
   robot.respond /test/i, (msg) ->
@@ -27,7 +28,6 @@ module.exports = (robot) ->
 
       msg.send
         username: "healthCheck Bot",
-        mrkdwn_in:
-          "text"
+        mrkdwn: true
         text: "<#{healthCheckUrl}|global status: #{data.globalStatus}>"
         attachments: attachments
