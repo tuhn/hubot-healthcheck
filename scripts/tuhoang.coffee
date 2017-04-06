@@ -6,7 +6,6 @@
 #
 
 module.exports = (robot) ->
-
   sites = [
     'pp',
     'preprod',
@@ -16,7 +15,6 @@ module.exports = (robot) ->
     'bt2',
     'mage-buy'
   ]
-
   aliases =
     pp: 'front-pp-u3'
     preprod: 'front-pp-u3'
@@ -29,28 +27,28 @@ module.exports = (robot) ->
 
     if envName in sites
       siteName = envName + '.sandbox.local'
+
+      msg.send "Hey, I am trying to check *#{siteName}*. Please wait for a few seconds..."
       healthCheckUrl = "http://#{siteName}/_monitor/health/run"
 
-      msg.send "Hey, I am trying to check *#{siteName}*"
       robot.http(healthCheckUrl)
       .header('Accept', 'application/json')
       .get() (err, res, body) ->
         try
           data = JSON.parse body
+          attachments = []
+          colors =
+            success: '#00b200'
+            alert: '#e50000'
+          for check in data.checks
+            attachments.push {
+              fallback: check.checkName
+              color: if check.status == 0 then colors.success else color.alert
+              text: check.message
+            }
           msg.send
             text: "General Status: #{data.globalStatus}"
-            attachments: [
-              {
-                fallback: 'EAI Accessibility Check'
-                color: '#00b200'
-                text: 'EAI is OK'
-              }
-              {
-                fallback: 'MemcacheD Accessibility Check'
-                color: '#00b200'
-                text: 'MemcacheD is OK'
-              }
-            ]
+            attachments: attachments
         catch err
           msg.send "Sorry, I coudn't check #{healthCheckUrl}"
     else
