@@ -29,9 +29,9 @@ module.exports = (robot) ->
 
     if envName in sites
       siteName = envName + '.sandbox.local'
-      healthCheckUrl = 'http://' + siteName + '/_monitor/health/run'
+      healthCheckUrl = 'http://#{siteName}/_monitor/health/run'
 
-      msg.send "Hey, I am trying to check " + siteName
+      msg.send "Hey, I am trying to check *#{siteName}*"
       robot.http(healthCheckUrl)
       .header('Accept', 'application/json')
       .get() (err, res, body) ->
@@ -52,6 +52,23 @@ module.exports = (robot) ->
               }
             ]
         catch err
-          msg.send "Sorry, I coudn't check " + siteName
+          msg.send
+            text: 'Health Check Error:'
+            attachments: [
+              {
+                fallback: 'Error'
+                color: '#e50000'
+                text: "Sorry, I coudn't check *#{siteName}*"
+              }
+            ]          
     else
-      msg.send "Sorry, that site has not been defined: " + envName
+      msg.send
+        text: 'Health Check Error:'
+        attachments: [
+          {
+            fallback: 'Error'
+            color: '#e50000'
+            text: "Sorry, that site has not been defined: *#{envName}*"
+          }
+        ]
+        
