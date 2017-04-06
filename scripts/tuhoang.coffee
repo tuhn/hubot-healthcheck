@@ -47,7 +47,7 @@ module.exports = (robot) ->
               text: check.message
             }
           msg.send
-            text: "General Status: #{data.globalStatus}"
+            text: "General Status: *#{data.globalStatus}*"
             attachments: attachments
         catch err
           msg.send "Sorry, I coudn't check #{healthCheckUrl}"
