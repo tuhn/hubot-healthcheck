@@ -27,6 +27,7 @@ module.exports = (robot) ->
 
       msg.send
         username: "healthCheck Bot",
-        mrkdwn_in: ["text"]
+        mrkdwn_in:
+          "text"
         text: "<#{healthCheckUrl}|global status: #{data.globalStatus}>"
         attachments: attachments
