@@ -6,6 +6,7 @@
 #
 
 module.exports = (robot) ->
+  # allowed sites
   sites = [
     'pp',
     'preprod',
@@ -15,9 +16,14 @@ module.exports = (robot) ->
     'bt2',
     'mage-buy'
   ]
+  # for shortcut
   aliases =
     pp: 'front-pp-u3'
     preprod: 'front-pp-u3'
+  # jarvis sites have different health check URLs
+  jarvisSites = [
+    'jarvisexchange'
+  ]
 
   robot.respond /check (.*)/i, (msg) ->
     envName = msg.match[1]
@@ -28,8 +34,11 @@ module.exports = (robot) ->
     if envName in sites
       siteName = envName + '.sandbox.local'
 
-      msg.send "Hey, I am trying to check *#{siteName}*. Please wait for a few seconds..."
-      healthCheckUrl = "http://#{siteName}/_monitor/health/run"
+      if envName in jarvisSites
+        healthCheckUrl = "http://#{siteName}/_monitor/health/run"
+      else
+        healthCheckUrl = "http://#{siteName}/fr/health"
+      msg.send "Hey, I am trying to check #{healthCheckUrl}. Please wait for a few seconds..."
 
       robot.http(healthCheckUrl)
       .header('Accept', 'application/json')
