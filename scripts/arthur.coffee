@@ -27,8 +27,10 @@ module.exports = (robot) ->
 
       console.log(JSON.stringify(attachments));
 
+      globalStatus = data.globalStatus.replace(data.globalStatus.replace(/^(global status: )(.*)/i, "$1*$2*"))
+
       msg.send
         username: "healthCheck Bot",
         mrkdwn: true
-        text: "<#{healthCheckUrl}|global status: #{data.globalStatus}>"
+        text: "<#{healthCheckUrl}|global status: #{globalStatus}>"
         attachments: attachments
