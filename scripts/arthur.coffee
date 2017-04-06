@@ -8,10 +8,10 @@ module.exports = (robot) ->
     alert: '#e50000'
 
   concat = (check) ->
-    color = if check.status == 0 then colors.success else color.alert
     attachments.push {
-      'color': color
-      'text': "*#{check.checkName}* \n\n #{check.message}"
+      color: if check.status == 0 then colors.success else color.alert
+      text: "*#{check.checkName}* \n\n #{check.message}"
+      mrkdwn: true
     }
 
   robot.respond /test/i, (msg) ->
@@ -19,17 +19,14 @@ module.exports = (robot) ->
     .header('Accept', 'application/json')
     .get() (err, res, body) ->
       data = JSON.parse body
-      #msg.send "status: #{data.globalStatus}"
 
       attachments = []
       concat check for check in data.checks
 
       console.log(JSON.stringify(attachments));
 
-      #msg.send report
       msg.send
         username: "healthCheck Bot",
         mrkdwn: true
         text: "<#{healthCheckUrl}|global status: #{data.globalStatus}>"
-        #text: report
         attachments: attachments
