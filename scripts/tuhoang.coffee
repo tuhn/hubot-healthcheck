@@ -52,6 +52,6 @@ module.exports = (robot) ->
               }
             ]
         catch err
-          msg.send "Sorry, I coudn't check *#{healthCheckUrl}*"
+          msg.send "Sorry, I coudn't check #{healthCheckUrl}"
     else
       msg.send "Sorry, that site has not been defined: *#{envName}*"
