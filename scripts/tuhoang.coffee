@@ -52,7 +52,7 @@ module.exports = (robot) ->
           for check in data.checks
             attachments.push {
               fallback: check.checkName
-              color: if check.status == 0 then colors.success else color.alert
+              color: if check.status == 0 then colors.success else colors.alert
               text: check.message
             }
           msg.send
@@ -60,5 +60,6 @@ module.exports = (robot) ->
             attachments: attachments
         catch err
           msg.send "Sorry, I coudn't check #{healthCheckUrl}"
+          console.log(err)
     else
       msg.send "Sorry, that site has not been defined: *#{envName}*"
