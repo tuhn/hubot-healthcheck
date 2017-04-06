@@ -10,7 +10,8 @@ module.exports = (robot) ->
   concat = (check) ->
     attachments.push {
       color: if check.status == 0 then colors.success else color.alert
-      text: "*#{check.checkName}* \n\n #{check.message}"
+      title: check.checkName
+      text: check.message
       mrkdwn_in:
         "text"
     }
