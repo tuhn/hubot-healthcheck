@@ -5,9 +5,9 @@ module.exports = (robot) ->
 
   concat = (check) ->
     icon = if check.status == 0 then '✔' else '✖'
-    attachments.push [
+    attachments.push {
       text: icon + ' ' + check.checkName + "\n" + check.message
-    ]
+    }
 
   robot.respond /test/i, (msg) ->
     robot.http(healthCheckUrl)
@@ -18,10 +18,12 @@ module.exports = (robot) ->
 
       concat check for check in data.checks
 
+      console.log(JSON.stringify(attachments));
+
       #msg.send report
       msg.send
         username: "healthCheck Bot",
-        #mrkdwn: true
+        mrkdwn: true
         text: "global status: #{data.globalStatus}"
         #text: report
         attachments: attachments
