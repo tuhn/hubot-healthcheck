@@ -37,7 +37,7 @@ module.exports = (robot) ->
       if envName in jarvisSites
         healthCheckUrl = "http://#{siteName}/_monitor/health/run"
       else
-        healthCheckUrl = "http://#{siteName}/fr/health"
+        healthCheckUrl = "http://#{siteName}/fr/health/"
       msg.send "Hey, I am trying to check #{healthCheckUrl}. Please wait for a few seconds..."
 
       robot.http(healthCheckUrl)
