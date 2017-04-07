@@ -9,7 +9,7 @@ module.exports = (robot) ->
 
   urls =
     jarvisexchange: 'http://jarvisexchange.sandbox.local/_monitor/health/run'
-    bt2: 'http://bt2.sandbox.local/fr/health/'
+    bt2: 'http://bt2.sandbox.local/fr/health_check.php'
 
 
   attachments = []
@@ -61,9 +61,13 @@ module.exports = (robot) ->
           console.log env
           console.log JSON.stringify prevStatus
 
+          attachments.push {
+            title: 'previous status'
+            text: JSON.stringify(backup)
+          }
+
           msg.send
             username: "healthCheck Bot",
             mrkdwn: true
             text: "<#{url}|#{data.globalStatus}>"
             attachments: attachments
-            footer: 'previous status:' + JSON.stringify(backup)
