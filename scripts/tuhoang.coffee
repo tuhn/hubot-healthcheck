@@ -37,8 +37,9 @@ module.exports = (robot) ->
       if envName in jarvisSites
         healthCheckUrl = "http://#{siteName}/_monitor/health/run"
       else
-        healthCheckUrl = "http://#{siteName}/fr/health_check.php"
-      msg.send "Hey, I am trying to check #{healthCheckUrl}. Please wait for a few seconds..."
+        healthCheckUrl = "http://#{siteName}/fr/health_check.php?time=" + new Date().getTime()
+      msg.send "Hey, I am trying to check #{siteName}. Please wait for a few seconds..."
+      console.log(healthCheckUrl)
 
       robot.http(healthCheckUrl)
       .header('Accept', 'application/json')
