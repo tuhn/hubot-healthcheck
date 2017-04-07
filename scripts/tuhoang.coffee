@@ -38,7 +38,7 @@ module.exports = (robot) ->
         healthCheckUrl = "http://#{siteName}/_monitor/health/run"
       else
         healthCheckUrl = "http://#{siteName}/fr/health_check.php?time=" + new Date().getTime()
-      msg.send "Hey, I am trying to check #{siteName}. Please wait for a few seconds..."
+      msg.send "Hey, I am trying to check *#{siteName}*. Please wait for a few seconds..."
       console.log(healthCheckUrl)
 
       robot.http(healthCheckUrl)
