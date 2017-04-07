@@ -2,15 +2,14 @@
 #   A way to check the health of our environments
 #
 # Commands:
-#   hubot healtcheck - does a check of all available environments
-#   hubot healthcheck <env> - does a check of the specified environment
+#   stalker healtcheck - does a check of all available environments
+#
 
 module.exports = (robot) ->
 
   urls =
     jarvisexchange: 'http://jarvisexchange.sandbox.local/_monitor/health/run'
     bt2: 'http://bt2.sandbox.local/fr/health_check.php'
-
 
   attachments = []
 
@@ -29,7 +28,15 @@ module.exports = (robot) ->
         "text"
     }
 
-  robot.respond /healthcheck/i, (msg) ->
+#   robot.respond /hcstart/i, id: 'start', (msg) ->
+#     msg.send 
+#       text: "starting healthcheck at interval"
+
+#   robot.respond /hcstop/i, id: 'start', (msg) ->
+#     msg.send 
+#       text: "stoping healthcheck at interval"
+
+  robot.respond /healthcheck/i, id: 'main', (msg) ->
     for env, url of urls
       robot.http(url)
       .header('Accept', 'application/json')
@@ -40,12 +47,9 @@ module.exports = (robot) ->
           data = JSON.parse body
           attachments = []
           concat check for check in data.checks
-          # console.log(JSON.stringify(attachments));
-
           date = new Date()
 
           prevStatus = robot.brain.get(env)
-
           unless prevStatus
             prevStatus = []
 
@@ -57,9 +61,6 @@ module.exports = (robot) ->
           robot.brain.set(env, prevStatus)
 
           backup = robot.brain.get(env)
-
-          console.log env
-          console.log JSON.stringify prevStatus
 
           attachments.push {
             title: 'previous status'

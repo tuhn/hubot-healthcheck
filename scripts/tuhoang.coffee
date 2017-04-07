@@ -25,6 +25,18 @@ module.exports = (robot) ->
     'jarvisexchange'
   ]
 
+  colors =
+    check_result_ok: '#00b200'
+    check_result_warning: '#ffff00'
+    check_result_skip: '#cccccc'
+    check_result_critical: '#e50000'
+  
+  getStatusColor = (status) ->
+    if colors[status]?
+      return colors[status]
+    else
+      return '#cccccc'
+
   robot.respond /check (.*)/i, (msg) ->
     envName = msg.match[1]
 
@@ -47,13 +59,10 @@ module.exports = (robot) ->
         try
           data = JSON.parse body
           attachments = []
-          colors =
-            success: '#00b200'
-            alert: '#e50000'
           for check in data.checks
             attachments.push {
               fallback: check.checkName
-              color: if check.status == 0 then colors.success else colors.alert
+              color: getStatusColor(check.status_name)
               text: check.message
             }
           msg.send
